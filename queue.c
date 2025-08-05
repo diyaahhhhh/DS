@@ -2,58 +2,57 @@
 int FRONT=-1,REAR=-1;
 
 //Enqueue
-void enqueue(int Q[],int n){
-    int ITEM,i;
+void enqueue(int Q[],int n, int ITEM){
     printf("---ENQUEUE---\n");
     if(REAR==n-1){
         printf("Overflow. Exiting...\n");
         return;
     }
-    if(REAR==-1){
-        FRONT=REAR=0;
-        printf("Enter items to be added:");
-        for(i=0;i<n;i++){
-            scanf("%d",&ITEM);
-            Q[REAR]=ITEM;
-            REAR++;
+    if(FRONT==-1){
+        FRONT=0;
         }
-    }
-    printf("Success!\n");
+    REAR++;
+    Q[REAR]=ITEM;
+    printf("Enqueued!\n");
     }
 
 //Dequeue
 void dequeue(int Q[], int n){
-    int ITEM,i;
+    int ITEM;
     printf("---DEQUEUE---\n");
     if(REAR<FRONT || FRONT==-1){
         printf("Underflow. Exiting...\n");
         return;
-    }
-    else{
-        FRONT=0;
-        ITEM=Q[FRONT];
-        FRONT++;
-        }
-    printf("Items deleted.");
-    }
-
+    } 
+    ITEM=Q[FRONT];      
+    printf("Item dequeued.\n");
+    FRONT++;
+    if(FRONT>REAR){
+         FRONT=REAR=-1;
+      }
+  }
 int main(){
-    int n,ch,A[3];
+    int n,ch,ITEM;
+    printf("Enter queue size:");
+    scanf("%d",&n);
+    int Q[n];
+    FRONT=REAR=-1;
+    while(1){
     printf("MENU\n");
     printf("1. Enqueue\n2. Dequeue\n3. Exit\n");
         printf("Enter choice:");
         scanf("%d",&ch);
         if(ch==3){
-            printf("Exiting...");
+            printf("Exiting...\n");
         }
         else if(ch==1){
-           printf("Enter array size:");
-           scanf("%d",&n);
-           int A[n];
-           enqueue(A,n);
+           printf("Enter item to be enqueued:");
+           scanf("%d",&ITEM);
+           enqueue(Q,n,ITEM);
                 }
         else if (ch==2){
-             dequeue(A,n);
+             dequeue(Q,n);
+             }
          }
 return 0;
 }
