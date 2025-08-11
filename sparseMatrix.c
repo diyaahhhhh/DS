@@ -40,7 +40,7 @@ for(i=0;i<value1+1;i++){
     }
     printf("\n");
 }
-printf("Enter row size and column sie of matrix B:");
+printf("Enter row size and column size of matrix B:");
     scanf("%d\t%d",&m2,&n2);
     int B[m2][n2];
     printf("Enter elements of matrix B:");
@@ -53,8 +53,8 @@ printf("Enter row size and column sie of matrix B:");
         }
     }
     printf("Input matrix B:\n");
-    for(i=0;i<3;i++){
-        for(j=0;j<3;j++){
+    for(i=0;i<m2;i++){
+        for(j=0;j<n2;j++){
            printf("%d\t",B[i][j]);
         }
     printf("\n");
