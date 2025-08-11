@@ -11,8 +11,8 @@ int main(){
                 }
           }
     printf("Input matrix A:\n");
-    for(i=0;i<3;i++){
-        for(j=0;j<3;j++){
+    for(i=0;i<m1;i++){
+        for(j=0;j<n1;j++){
            printf("%d\t",A[i][j]);
            if(A[i][j]!=0){
                value1+=1;
