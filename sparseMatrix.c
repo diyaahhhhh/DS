@@ -1,6 +1,6 @@
 #include <stdio.h>
 int main(){
-    int i,j,sr1=1,sr2=1,m1,n1,m2,n2,value1=0,value2=0,S1[5][5],S2[5][5],SUM[5][5];
+    int i,j,sr1=1,sr2=1,m1,n1,m2,n2,value1=0,value2=0,S1[5][5],S2[5][5],SUM[5][5],temp[5][5];
     printf("Enter row size and column sie of matrix A:");
     scanf("%d\t%d",&m1,&n1);
     int A[m1][n1];
@@ -97,8 +97,23 @@ printf("\n");
 else{
     printf("Rows aren't same! Exiting...\n");
 }
+for(i=0;i<value1+1;i++){
+    for(j=0;j<3;j++){
+        temp[i][0]=SUM[i][1];
+        temp[i][1]=SUM[i][0];
+        temp[i][2]=SUM[i][2];
+    }
+}
+printf("Transpose:\n");
+for(i=0;i<value1+1;i++){
+    for(j=0;j<3;j++){
+        printf("%d\t",temp[i][j]);
+    }
+    printf("\n");
+}
 return 0;
 }
+
 
     
    
