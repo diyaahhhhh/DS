@@ -1,106 +1,90 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-struct node {
-    char URL[100];
-    struct node *prev;
-    struct node *next;
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+struct page{
+    char url[50];
+    struct page *prev;
+    struct page *next;
 };
-
-struct node* newPage(char *URL) {
-    struct node *newNode = (struct node *)malloc(sizeof(struct node));
-    strcpy(newNode->URL, URL);
-    newNode->prev = NULL;
-    newNode->next = NULL;
-    return newNode;
+struct page *createNode(char *url){
+    struct page *newPage=(struct page*)malloc(sizeof(struct page));
+    strcpy(newPage->url,url);
+    newPage->prev=NULL;
+    newPage->next=NULL;
+    return newPage;
 }
-
-void visitNewPage(struct node **current, char *URL) {
-    struct node *newNode = newPage(URL);
-    newNode->prev = *current;
-    newNode->next = NULL;
-
-    if (*current != NULL) {
-        (*current)->next = newNode;
+struct page *head=NULL;
+struct page *current=NULL;
+void visitPage(char *url){
+    struct page *newPage=createNode(url);
+    if(head==NULL){
+        head=current=newPage;
+        return;
+        
     }
-
-    *current = newNode;
-    printf("Visited: %s\n", URL);
-}
-void displayCurrentPage(struct node *current) {
-    if (current != NULL) {
-        printf("Current page: %s\n", current->URL);
-    } else {
-        printf("No pages visited yet.\n");
+    struct page *temp=current->next;
+    while(temp!=NULL){
+        struct page *next=temp->next;
+        free(temp);
+        temp=next;
     }
+    current->next=NULL;
+    newPage->prev=current;
+    current->next=newPage;
+    current=newPage;
 }
-void goBack(struct node **current) {
-    if (*current != NULL && (*current)->prev != NULL) {
-        *current = (*current)->prev;
-        printf("Went back to: %s\n", (*current)->URL);
-    } else {
-        printf("No previous page.\n");
+void goBack(){
+    if(current!=NULL && current->prev!=NULL){
+        current=current->prev;
+        printf("Went back to:%s\n",current->url);
     }
-}
-
-void goForward(struct node **current) {
-    if (*current != NULL && (*current)->next != NULL) {
-        *current = (*current)->next;
-        printf("Went forward to: %s\n", (*current)->URL);
-    } else {
-        printf("No forward page.\n");
+    else{
+        printf("No previous page.");
     }
 }
-
-int main() {
-    struct node *homepage = newPage("homepage.com");
-    struct node *current = homepage;
+void currentPage(){
+    if(current==NULL){
+        printf("No page visisted yet.\n");
+    }
+    else{
+        printf("Currently at:%s\n",current->url);
+    }
+}
+void goForward(){
+    if(current!=NULL && current->next!=NULL){
+        current=current->next;
+        printf("Went forward to:%s\n");
+    }
+    else{
+        printf("No forward page.");
+    }
+}
+int main(){
     int ch;
-    char url[100];
-
-    while (1) {
-        printf("\nMENU\n");
-        printf("1. Visit new page\n");
-        printf("2. Go back\n");
-        printf("3. Go forward\n");
-        printf("4. Display current page\n");
-        printf("5. Exit\n");
-        printf("Enter choice: ");
-        scanf("%d", &ch);
-        getchar(); // consume leftover newline
-
-        switch (ch) {
+    char url[50];
+    while(1){
+        printf("MENU\n1. Visit\n2. Go back\n3. Go forward\n4. Show current\n5. Exit\n");
+        printf("Enter choice:");
+        scanf("%d",&ch);
+        if(ch==5){
+            break;
+        }
+        switch(ch){
             case 1:
-                printf("Enter URL: ");
-                fgets(url, sizeof(url), stdin);
-                url[strcspn(url, "\n")] = 0; // remove newline
-                visitNewPage(&current, url);
-                break;
+              printf("Enter url:");
+              scanf("%s",url);
+              visitPage(url);
+              break;
             case 2:
-                goBack(&current);
-                break;
+              goBack();
+              break;
             case 3:
-                goForward(&current);
-                break;
+              goForward();
+              break;
             case 4:
-                displayCurrentPage(current);
-                break;
-            case 5:
-                printf("Exiting...\n");
-                // Free all allocated nodes
-                while (current->prev != NULL) {
-                    current = current->prev;
-                }
-                while (current != NULL) {
-                    struct node *next = current->next;
-                    free(current);
-                    current = next;
-                }
-                return 0;
-            default:
-                printf("Invalid choice! Try again.\n");
+              currentPage();
+              break;
         }
     }
+return 0;
 }
-
